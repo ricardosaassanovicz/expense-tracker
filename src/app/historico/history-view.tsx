@@ -119,7 +119,7 @@ export function HistoryView() {
             </CardContent>
           </Card>
         ) : (
-          <Card>
+          <Card className="py-0">
             <CardContent className="py-2">
               <ul className="divide-y">
                 {filteredExpenses.map((e) => (

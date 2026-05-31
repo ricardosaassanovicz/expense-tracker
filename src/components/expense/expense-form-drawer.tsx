@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { Sparkles, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -21,7 +21,6 @@ import { useCategories, useCreateCategory } from "@/lib/queries/categories";
 import { useCreateExpense } from "@/lib/queries/expenses";
 import { digitsToCents, formatMoneyInput } from "@/lib/utils-app/currency";
 import { toISODate } from "@/lib/utils-app/date";
-import { parsePixText } from "@/lib/utils-app/parse-pix";
 
 type Props = {
   open: boolean;
@@ -37,17 +36,8 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState(() => toISODate());
   const [categorySearch, setCategorySearch] = useState("");
-  const [pixText, setPixText] = useState("");
   const [initialCatSet, setInitialCatSet] = useState(false);
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-
-  // pré-seleciona primeira categoria quando carregam
-  useEffect(() => {
-    if (categories.length > 0 && !initialCatSet && open) {
-      setCategorySearch(categories[0].name);
-      setInitialCatSet(true);
-    }
-  }, [categories, initialCatSet, open]);
 
   // reseta ao fechar
   useEffect(() => {
@@ -56,7 +46,6 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
       setDescription("");
       setDate(toISODate());
       setCategorySearch("");
-      setPixText("");
       setInitialCatSet(false);
     }
   }, [open]);
@@ -65,25 +54,6 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
     () => formatMoneyInput(amountDigits || "0"),
     [amountDigits],
   );
-
-  function handleParsePix() {
-    if (!pixText.trim()) {
-      toast.info("Cole um texto do Pix ou SMS primeiro.");
-      return;
-    }
-    const parsed = parsePixText(pixText);
-    let used = false;
-    if (parsed.cents && parsed.cents > 0) {
-      setAmountDigits(String(parsed.cents));
-      used = true;
-    }
-    if (parsed.description && !description) {
-      setDescription(parsed.description);
-      used = true;
-    }
-    if (used) toast.success("Sugestão aplicada — confira antes de salvar.");
-    else toast.warning("Não consegui identificar um valor no texto.");
-  }
 
   async function handleQuickAddCategory() {
     const catName = categorySearch.trim();
@@ -164,9 +134,6 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
         <div className="mx-auto w-full max-w-md">
           <DrawerHeader className="text-left">
             <DrawerTitle>Novo gasto</DrawerTitle>
-            <DrawerDescription>
-              Registre rapidamente um gasto que você fez.
-            </DrawerDescription>
           </DrawerHeader>
 
           <form onSubmit={handleSubmit} className="space-y-4 px-4 pb-2">
@@ -193,8 +160,8 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
               <Label htmlFor="description">Descrição</Label>
               <Input
                 id="description"
-                placeholder="Ex.: Mercado, Uber, Cinema..."
                 value={description}
+                className="h-10"
                 onChange={(e) => setDescription(e.target.value)}
                 maxLength={120}
               />
@@ -207,6 +174,7 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
                   id="date"
                   type="date"
                   value={date}
+                  className="h-10"
                   onChange={(e) => setDate(e.target.value)}
                   required
                 />
@@ -216,7 +184,6 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
                 <div className="flex items-center gap-1.5 relative">
                   <Input
                     id="category"
-                    placeholder="Buscar ou criar..."
                     value={categorySearch}
                     onChange={(e) => {
                       setCategorySearch(e.target.value);
@@ -225,7 +192,7 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
                     onFocus={() => setDropdownOpen(true)}
                     onBlur={() => setTimeout(() => setDropdownOpen(false), 200)}
                     autoComplete="off"
-                    className="flex-1"
+                    className="flex-1 h-10"
                   />
                   {categorySearch.trim() &&
                     !categories.some(
@@ -284,32 +251,6 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
               </div>
             </div>
 
-            <div className="space-y-2 rounded-lg border bg-muted/40 p-3">
-              <Label
-                htmlFor="pix"
-                className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wide text-muted-foreground"
-              >
-                <Sparkles className="size-3.5" />
-                Colar texto do Pix / SMS
-              </Label>
-              <textarea
-                id="pix"
-                rows={2}
-                className="w-full resize-none rounded-md border bg-background px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/40"
-                placeholder="Cole aqui, ex.: 'Pix de R$ 42,90 enviado para LANCHONETE DO ZÉ'"
-                value={pixText}
-                onChange={(e) => setPixText(e.target.value)}
-              />
-              <Button
-                type="button"
-                variant="secondary"
-                size="sm"
-                className="w-full"
-                onClick={handleParsePix}
-              >
-                Preencher automaticamente
-              </Button>
-            </div>
           </form>
 
           <DrawerFooter className="pt-2">
@@ -321,7 +262,7 @@ export function ExpenseFormDrawer({ open, onOpenChange }: Props) {
               {createExpense.isPending || createCategory.isPending ? "Salvando..." : "Salvar gasto"}
             </Button>
             <DrawerClose asChild>
-              <Button variant="ghost">Cancelar</Button>
+              <Button variant="ghost" className="h-11 text-base">Cancelar</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>

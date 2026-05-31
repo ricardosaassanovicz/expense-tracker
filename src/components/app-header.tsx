@@ -24,10 +24,10 @@ export function AppHeader({ title }: { title: string }) {
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between border-b bg-background/80 px-4 py-3 backdrop-blur">
-      <h1 className="font-heading text-lg font-semibold tracking-tight">
+      <h1 className="font-heading text-xl font-semibold tracking-tight">
         {title}
       </h1>
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-4">
         <Button
           render={<Link href="/historico" />}
           nativeButton={false}
@@ -35,7 +35,7 @@ export function AppHeader({ title }: { title: string }) {
           size="icon"
           aria-label="Histórico"
         >
-          <List className="size-5" />
+          <List className="size-6" />
         </Button>
         <Button
           render={<Link href="/categorias" />}
@@ -44,7 +44,7 @@ export function AppHeader({ title }: { title: string }) {
           size="icon"
           aria-label="Categorias"
         >
-          <Tags className="size-5" />
+          <Tags className="size-6" />
         </Button>
         <Button
           variant="ghost"
@@ -52,7 +52,7 @@ export function AppHeader({ title }: { title: string }) {
           aria-label="Sair"
           onClick={handleLogout}
         >
-          <LogOut className="size-5" />
+          <LogOut className="size-6" />
         </Button>
       </div>
     </header>

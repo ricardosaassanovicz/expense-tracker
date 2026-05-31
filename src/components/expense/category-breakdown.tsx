@@ -63,7 +63,7 @@ export function CategoryBreakdown({
   }
 
   return (
-    <Card>
+    <Card className="py-0">
       <CardContent className="space-y-4 py-4">
         <h2 className="font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Por categoria

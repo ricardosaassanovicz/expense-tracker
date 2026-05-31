@@ -77,12 +77,12 @@ export function CategoriesView() {
           >
             <ArrowLeft className="size-5" />
           </Button>
-          <h1 className="font-heading text-lg font-semibold tracking-tight">
+          <h1 className="font-heading text-xl font-semibold tracking-tight">
             Categorias
           </h1>
         </div>
-        <Button size="sm" onClick={() => setOpen(true)}>
-          <Plus className="size-4" />
+        <Button size="lg" onClick={() => setOpen(true)} className="text-base">
+          <Plus className="size-5" />
           Nova
         </Button>
       </header>

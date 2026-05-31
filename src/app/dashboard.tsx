@@ -32,7 +32,7 @@ export function Dashboard() {
 
       <main className="mx-auto w-full max-w-md flex-1 space-y-4 px-4 py-4">
         <Card className="bg-primary text-primary-foreground">
-          <CardContent className="space-y-1 py-5">
+          <CardContent className="space-y-1 py-4">
             <p className="text-xs uppercase tracking-wide opacity-80">
               Total gasto · {monthLabel}
             </p>

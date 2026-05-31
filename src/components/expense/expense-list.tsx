@@ -9,7 +9,7 @@ export function ExpenseList({ expenses }: { expenses: ExpenseWithCategory[] }) {
   if (expenses.length === 0) return null;
 
   return (
-    <Card>
+    <Card className="py-0">
       <CardContent className="py-2">
         <h2 className="px-1 pt-2 pb-1 font-heading text-sm font-semibold uppercase tracking-wide text-muted-foreground">
           Últimos gastos
